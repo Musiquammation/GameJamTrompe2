@@ -20,13 +20,13 @@ export class Game extends GameLayer {
 
 	private test() {
 		this.mouses.push(new Mouse(20, 0));
-		this.lavas.push(new Lava(100, 0, 30, 30, 1000))
+		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
 	*getEntities(): Generator<Entity> {
-		yield this.player;
-		yield *this.mouses;
 		yield *this.lavas;
+		yield *this.mouses;
+		yield this.player;
 	}
 	
 	frame(handler: GameHandler): GameState | null {

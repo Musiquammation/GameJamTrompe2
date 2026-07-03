@@ -76,7 +76,7 @@ export abstract class Entity {
 			height
 		);
 
-		let y = this.y - (height/2 + 10);
+		let y = this.y - (height/2 + Math.min(10, height*.3));
 
 		for (const bar of bars) {
 			const w = bar.size;

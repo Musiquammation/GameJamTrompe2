@@ -43,7 +43,7 @@ export class Lava extends Entity {
     }
 
     private getTexture() {
-        return "lavaIdle";
+        return "lava";
     }
 
     override getSize() {

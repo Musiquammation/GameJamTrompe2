@@ -5,6 +5,7 @@ import {InputHandler} from "./InputHandler";
 import { ImageLoader } from "./ImageLoader";
 import { GAME_COLORS } from "./GAME_COLORS";
 import { Game } from "../game/Game";
+import { loadGameTextures } from "../game/loadGameTextures";
 
 declare global {
 	interface Window {
@@ -78,6 +79,7 @@ export class GameHandler {
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+		loadGameTextures(this.imgLoader);
 
 		const followCamera = () => {
 			ctx.save();
