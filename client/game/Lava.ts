@@ -35,7 +35,6 @@ export class Lava extends Entity {
         this.hit(1);
 
 
-        return false;
     }
 
     override getMaxHp() {

@@ -34,7 +34,7 @@ export class Player extends Entity {
 	}
 
 	override update(game: Game, handler: GameHandler) {
-		return false;
+		
 	}
 
 	override getMaxHp() {

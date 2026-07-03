@@ -23,6 +23,21 @@ export class Game extends GameLayer {
 		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
+	private static removeDeadInPlace<T extends Entity>(arr: T[]): void {
+		let write = 0;
+
+		for (let read = 0; read < arr.length; read++) {
+			const e = arr[read];
+
+			if (e.getHp() > 0) {
+				arr[write] = e;
+				write++;
+			}
+		}
+
+		arr.length = write;
+	}
+
 	*getEntities(): Generator<Entity> {
 		yield *this.lavas;
 		yield *this.mouses;
@@ -47,6 +62,11 @@ export class Game extends GameLayer {
 		for (const entity of this.getEntities()) {
 			entity.update(this, handler);
 		}
+
+
+		// Remove entities
+		Game.removeDeadInPlace(this.mouses);
+		Game.removeDeadInPlace(this.lavas);
 
 
 		return null;

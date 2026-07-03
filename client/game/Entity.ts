@@ -49,8 +49,12 @@ export abstract class Entity {
 		this.hp -= damages;
 	}
 
+	kill() {
+		this.hp = -Infinity;
+	}
+
 	abstract frame(game: Game, handler: GameHandler): void;
-	abstract update(game: Game, handler: GameHandler): boolean;
+	abstract update(game: Game, handler: GameHandler): void;
 
 	move() {
 		this.x += this.vx;
