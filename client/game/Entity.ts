@@ -13,8 +13,6 @@ interface DrawBar {
 interface DrawData {
 	bars: DrawBar[];
 	texture: string;
-	width: number;
-	height: number;
 }
 
 
@@ -29,10 +27,10 @@ export abstract class Entity {
 	vy: number = 0;
 	private hp: number;
 
-	constructor(x: number, y: number) {
+	constructor(x: number, y: number, hp = this.getMaxHp()) {
 		this.x = x;
 		this.y = y;
-		this.hp = this.getMaxHp();
+		this.hp = hp;
 	}
 
 	getHp() {
@@ -51,7 +49,8 @@ export abstract class Entity {
 		this.hp -= damages;
 	}
 
-	abstract frame(game: Game, handler: GameHandler): boolean;
+	abstract frame(game: Game, handler: GameHandler): void;
+	abstract update(game: Game, handler: GameHandler): boolean;
 
 	move() {
 		this.x += this.vx;
@@ -60,10 +59,13 @@ export abstract class Entity {
 
 	abstract getMaxHp(): number;
 
+	abstract getSize(): {width: number, height: number};
+
 	protected abstract getDrawData(): DrawData;
 
 	draw(ctx: CanvasRenderingContext2D, iloader: ImageLoader) {
-		const { bars, width, height, texture } = this.getDrawData();
+		const { bars, texture } = this.getDrawData();
+		const { width, height } = this.getSize();
 
 		const img = iloader.get(texture);
 		ctx.drawImage(
@@ -96,6 +98,28 @@ export abstract class Entity {
 
 			y -= h + 2;
 		}
+	}
+
+	isTouching(other: Entity): boolean {
+		const a = this.getSize();
+		const b = other.getSize();
+
+		const ax1 = this.x - a.width / 2;
+		const ax2 = this.x + a.width / 2;
+		const ay1 = this.y - a.height / 2;
+		const ay2 = this.y + a.height / 2;
+
+		const bx1 = other.x - b.width / 2;
+		const bx2 = other.x + b.width / 2;
+		const by1 = other.y - b.height / 2;
+		const by2 = other.y + b.height / 2;
+
+		return (
+			ax1 < bx2 &&
+			ax2 > bx1 &&
+			ay1 < by2 &&
+			ay2 > by1
+		);
 	}
 }
 

@@ -31,7 +31,9 @@ export class Player extends Entity {
 		} else {
 			this.vy = -Player.SPEED; // set velocity to the up
 		}
+	}
 
+	override update(game: Game, handler: GameHandler) {
 		return false;
 	}
 
@@ -41,6 +43,13 @@ export class Player extends Entity {
 
 	private getTexture() {
 		return "playerIdle";
+	}
+
+	override getSize() {
+		return {
+			width: Player.SIZE,
+			height: Player.SIZE
+		};
 	}
 	
 	override getDrawData() {
@@ -52,9 +61,7 @@ export class Player extends Entity {
 				background: Entity.HP_BACKGROUND,
 				size: Player.SIZE * 1.2
 			}],
-			texture: this.getTexture(),
-			width: Player.SIZE,
-			height: Player.SIZE
+			texture: this.getTexture()
 		};
 	}
 }

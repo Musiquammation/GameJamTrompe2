@@ -28,13 +28,24 @@ export class Mouse extends Entity {
         return false;
     }
 
+    override update(game: Game, handler: GameHandler) {
+        return false;
+    }
+
     override getMaxHp() {
         return 100;
     }
 
     private getTexture() {
-        return "playerIdle";
+        return "mouseIdle";
     }
+
+    override getSize() {
+		return {
+			width: Mouse.SIZE,
+			height: Mouse.SIZE
+		};
+	}
     
     override getDrawData() {
         return {
@@ -46,8 +57,6 @@ export class Mouse extends Entity {
                 size: Mouse.SIZE * 1.2
             }],
             texture: this.getTexture(),
-            width: Mouse.SIZE,
-            height: Mouse.SIZE
         };
     }
 }
