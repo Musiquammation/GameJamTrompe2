@@ -3,13 +3,22 @@ import { ImageLoader } from "../handler/ImageLoader";
 import { GameState } from "../handler/states";
 import { Entity } from "./Entity";
 import { GameLayer } from "./GameLayer";
+import { Mouse } from "./Mouse";
 import { Player } from "./Player";
 
 export class Game extends GameLayer {
 	player = new Player(0, 0);
+	mouses = new Array<Mouse>();
+
+	// tests
+	constructor() {
+		super();
+		this.mouses.push(new Mouse(20, 0));
+	}
 
 	private *getEntities(): Generator<Entity> {
 		yield this.player;
+		yield *this.mouses;
 	}
 	
 	frame(handler: GameHandler): GameState | null {
