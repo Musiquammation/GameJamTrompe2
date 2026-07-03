@@ -12,7 +12,7 @@ export interface DrawStateData {
 
 export abstract class GameState {
 	abstract enter(data: any, input: InputHandler): void;
-	abstract frame(game: GameHandler): GameState | null;
+	abstract frame(handler: GameHandler): GameState | null;
 	abstract draw(args: DrawStateData): void;
 	abstract exit(): any;
 	abstract getCamera(): Vector3 | null;

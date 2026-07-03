@@ -61,6 +61,8 @@ export class GameHandler {
 	gameDraw(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number, drawMethod: 
 		(ctx: CanvasRenderingContext2D, followCamera: (()=>void), unfollowCamera: (()=>void)) => void
 	) {
+		ctx.imageSmoothingEnabled = false;
+		
 		const scaleX = canvasWidth / GAME_WIDTH;
 		const scaleY = canvasHeight / GAME_HEIGHT;
 		const scale = Math.min(scaleX, scaleY);
