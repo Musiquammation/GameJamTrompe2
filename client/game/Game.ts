@@ -13,9 +13,19 @@ export class Game extends GameLayer {
 	}
 	
 	frame(handler: GameHandler): GameState | null {
+		// Run frames
 		for (const entity of this.getEntities()) {
 			entity.frame(this, handler);
 		}
+
+		/// TODO: collisions
+		
+		
+		// Move
+		for (const entity of this.getEntities()) {
+			entity.move();
+		}
+
 
 		return null;
 	}

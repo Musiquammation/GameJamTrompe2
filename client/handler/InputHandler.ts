@@ -3,11 +3,10 @@ import type { Control } from "./Control";
 type Mode = "zqsd" | "wasd";
 
 class Keydown {
-	turnLeft = false;
-	turnRight = false;
-	yieldIns = false;
-	light = false;
-	altern = false;
+	left = false;
+	right = false;
+	up = false;
+	down = false;
 }
 
 enum Action {
@@ -19,17 +18,16 @@ enum Action {
 };
 
 class KeyboardCollector {
-	turnLeft = Action.NONE;
-	turnRight = Action.NONE;
-	yieldIns = Action.NONE;
-	light = Action.NONE;
-	altern = Action.NONE;
+	left = Action.NONE;
+	right = Action.NONE;
+	up = Action.NONE;
+	down = Action.NONE;
 }
 
 
 
 export class InputHandler {
-	static CONTROLS: Control[] = ['turnLeft', 'turnRight', 'yieldIns', 'light', 'altern'];
+	static CONTROLS: Control[] = ['left', 'right', 'up', 'down'];
 	static CONTROL_STACK_SIZE = 256;
 
 
@@ -55,19 +53,17 @@ export class InputHandler {
 
 	static KEYBOARDS: Record<Mode, Record<string, Control>> = {
 		zqsd: {
-			KeyE: 'turnLeft',
-			KeyR: 'turnRight',
-			KeyP: 'yieldIns',
-			KeyL: 'light',
-			KeyS: 'altern',
+			KeyQ: 'left',
+			KeyS: 'right',
+			KeyZ: 'up',
+			KeyD: 'down'
 		},
 
 		wasd: {
-			KeyE: 'turnLeft',
-			KeyR: 'turnRight',
-			KeyP: 'yieldIns',
-			KeyL: 'light',
-			KeyS: 'altern',
+			KeyA: 'left',
+			KeyD: 'right',
+			KeyW: 'up',
+			KeyS: 'down'
 		},
 	};
 

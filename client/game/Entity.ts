@@ -25,6 +25,8 @@ export abstract class Entity {
 
 	x: number;
 	y: number;
+	vx: number = 0;
+	vy: number = 0;
 	private hp: number;
 
 	constructor(x: number, y: number) {
@@ -50,6 +52,11 @@ export abstract class Entity {
 	}
 
 	abstract frame(game: Game, handler: GameHandler): boolean;
+
+	move() {
+		this.x += this.vx;
+		this.y += this.vy;
+	}
 
 	abstract getMaxHp(): number;
 

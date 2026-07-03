@@ -1,1 +1,1 @@
-export type Control = 'turnLeft' | 'turnRight' | 'yieldIns' | 'light' | 'altern';
+export type Control = 'left' | 'right' | 'up' | 'down';
