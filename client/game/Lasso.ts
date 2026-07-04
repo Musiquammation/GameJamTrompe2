@@ -69,8 +69,6 @@ export class Lasso {
 			this.currentX -= dx;
 			this.currentY -= dy;
 
-			console.log(dx, dy, this.currentX - prevX, this.currentY - prevY);
-			
 			// Check if target is on the point
 			if (Math.abs(this.currentX - prevX) + Math.abs(this.currentY - prevY) <= 0.01) {
 				this.points.pop(); // remove last point
