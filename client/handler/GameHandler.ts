@@ -32,7 +32,7 @@ export class GameHandler {
 	private state: GameState;
 
 	inputHandler: InputHandler;
-	imgLoader = new ImageLoader(window.IMG_ROOT_PATH);
+	imgLoader: ImageLoader;
 
 	constructor(
 		keyboardMode: "zqsd" | "wasd",
@@ -45,6 +45,9 @@ export class GameHandler {
 
 		this.state = new Game();
 		this.state.enter(undefined, this.inputHandler);
+
+		this.imgLoader = new ImageLoader(window.IMG_ROOT_PATH);
+		loadGameTextures(this.imgLoader);
 	}
 	
 
@@ -78,8 +81,6 @@ export class GameHandler {
 		const camera = this.state.getCamera();
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-		loadGameTextures(this.imgLoader);
 
 		const followCamera = () => {
 			ctx.save();

@@ -1,5 +1,5 @@
 import { GameHandler } from "../handler/GameHandler";
-import { normalizeMaxVector, Vector2 } from "../handler/Vector2";
+import { normalizeVector, Vector2 } from "../handler/Vector2";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 
@@ -12,18 +12,16 @@ export class Mouse extends Entity {
 	override frame(game: Game, handler: GameHandler) {
 		const player = game.player;
 
-		// Get position deltas
-		const delta: Vector2 = {
-			x: player.x - this.x,
-			y: player.y - this.y,
-		};
-
 		// Get direction to player
-		const {x: dx, y: dy} = normalizeMaxVector(delta);
+		const {x: dx, y: dy} = normalizeVector(
+			player.x - this.x,
+			player.y - this.y,
+			Mouse.SPEED
+		);
 
 		// Follow player
-		this.vx = dx * Mouse.SPEED;
-		this.vy = dy * Mouse.SPEED;
+		this.vx = dx;
+		this.vy = dy;
 	}
 
 	override update(game: Game) {
