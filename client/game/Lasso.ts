@@ -1,4 +1,4 @@
-import { normalizeMaxVector, Vector2 } from "../handler/Vector2";
+import { normalizeVector, Vector2 } from "../handler/Vector2";
 
 export class Lasso {
 	private static readonly MOUSE_SPEED = 3;
@@ -19,18 +19,15 @@ export class Lasso {
 		}
 
 		// Follow mouse
-		const {x: dx, y: dy} = normalizeMaxVector({
-			x: mouseX - this.currentX,
-			y: mouseY - this.currentY,
-		})
-
-		console.log(dx, dy, mouseX - this.currentX, mouseY - this.currentY);
+		const {x: dx, y: dy} = normalizeVector(
+			mouseX - this.currentX,
+			mouseY - this.currentY,
+			Lasso.MOUSE_SPEED
+		)
 
 		// Move point towards the mouse
-		this.currentX += dx * Lasso.MOUSE_SPEED;
-		this.currentY += dy * Lasso.MOUSE_SPEED;
-
-
+		this.currentX += dx;
+		this.currentY += dy;
 	}
 
 
