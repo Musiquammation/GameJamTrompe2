@@ -38,8 +38,10 @@ export class Player extends Entity {
 		}
 
 		// Call lasso
-		const {x: mouseX, y: mouseY} = game.getMouse();
-		this.lasso.frame(this.x, this.y, mouseX, mouseY);
+		if (handler.inputHandler.press('left')) {
+			const {x: mouseX, y: mouseY} = game.getMouse();
+			this.lasso.frame(this.x, this.y, mouseX, mouseY);
+		}
 	}
 
 	override update(game: Game) {
