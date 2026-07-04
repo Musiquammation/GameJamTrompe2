@@ -1,7 +1,8 @@
 import { normalizeVector, Vector2 } from "../handler/Vector2";
 
 export class Lasso {
-	private static readonly MOUSE_SPEED = 3;
+	private static readonly MOUSE_SPEED = 4;
+	private static readonly STEP = 10;
 	private currentX = 0;
 	private currentY = 0;
 
@@ -19,17 +20,40 @@ export class Lasso {
 		}
 
 		// Follow mouse
-		const {x: dx, y: dy} = normalizeVector(
-			mouseX - this.currentX,
-			mouseY - this.currentY,
-			Lasso.MOUSE_SPEED
-		)
+		{
+			const {x: dx, y: dy} = normalizeVector(
+				mouseX - this.currentX,
+				mouseY - this.currentY,
+				Lasso.MOUSE_SPEED
+			)
+	
+			// Move point towards the mouse
+			this.currentX += dx;
+			this.currentY += dy;
+		}
 
-		// Move point towards the mouse
-		this.currentX += dx;
-		this.currentY += dy;
+		// Add points
+		let {x: prevX, y: prevY} = this.points[this.points.length-1];
+		while (true) {
+			// Check distance with next point
+			let dx = this.currentX - prevX;
+			let dy = this.currentY - prevY;
+			const dist2 = dx*dx + dy*dy;
+			if (dist2 <= Lasso.STEP*Lasso.STEP)
+				break; // point is too near
+
+			// Move
+			const inv = 1/Math.sqrt(dist2);
+			this.points.push({x: prevX, y: prevY});
+			prevX += dx*inv;
+			prevY += dy*inv;
+		}
+		
 	}
 
+	back() {
+
+	}
 
 	draw(ctx: CanvasRenderingContext2D) {
 		if (this.points.length === 0)

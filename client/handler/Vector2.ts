@@ -12,3 +12,6 @@ export function normalizeVector(dx: number, dy: number, norm = 1): Vector2 {
 	}
 }
 
+export function evalDist2(dx: number, dy: number) {
+	return dx*dx + dy*dy;
+}

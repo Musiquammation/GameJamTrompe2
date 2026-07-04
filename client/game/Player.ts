@@ -38,9 +38,11 @@ export class Player extends Entity {
 		}
 
 		// Call lasso
-		if (handler.inputHandler.press('left')) {
+		if (handler.inputHandler.press('mouse-left')) {
 			const {x: mouseX, y: mouseY} = game.getMouse();
 			this.lasso.frame(this.x, this.y, mouseX, mouseY);
+		} else {
+			this.lasso.back
 		}
 	}
 
