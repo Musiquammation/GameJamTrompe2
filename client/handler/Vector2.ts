@@ -3,12 +3,12 @@ export interface Vector2 {
 	y: number;
 }
 
-export function normalizeVector(v: Vector2): Vector2 {
-	const dist = Math.sqrt(v.x * v.x + v.y * v.y);
-	const ratio = dist <= 1 ? 1 : 1/dist;
+export function normalizeVector(dx: number, dy: number, norm = 1): Vector2 {
+	const dist = Math.sqrt(dx * dx + dy * dy);
+	const ratio = dist <= norm ? norm : norm/dist;
 	return {
-		x: v.x * ratio,
-		y: v.y * ratio,
+		x: dx * ratio,
+		y: dy * ratio,
 	}
 }
 
