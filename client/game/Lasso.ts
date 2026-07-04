@@ -2,7 +2,7 @@ import { normalizeVector, Vector2 } from "../handler/Vector2";
 
 export class Lasso {
 	private static readonly MOVE_SPEED = 4;
-	private static readonly RETRACT_SPEED = 10;
+	private static readonly RETRACT_SPEED = 12;
 	private static readonly STEP = 10;
 	private currentX = 0;
 	private currentY = 0;
