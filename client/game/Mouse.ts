@@ -1,5 +1,5 @@
 import { GameHandler } from "../handler/GameHandler";
-import { normalizeVector, Vector2 } from "../handler/Vector2";
+import { normalizeMaxVector, Vector2 } from "../handler/Vector2";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 
@@ -19,7 +19,7 @@ export class Mouse extends Entity {
 		};
 
 		// Get direction to player
-		const {x: dx, y: dy} = normalizeVector(delta);
+		const {x: dx, y: dy} = normalizeMaxVector(delta);
 
 		// Follow player
 		this.vx = dx * Mouse.SPEED;
