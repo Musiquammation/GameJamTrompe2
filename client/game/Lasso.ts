@@ -1,7 +1,8 @@
 import { normalizeVector, Vector2 } from "../handler/Vector2";
 
 export class Lasso {
-	private static readonly MOUSE_SPEED = 4;
+	private static readonly MOVE_SPEED = 4;
+	private static readonly RETRACT_SPEED = 10;
 	private static readonly STEP = 10;
 	private currentX = 0;
 	private currentY = 0;
@@ -24,7 +25,7 @@ export class Lasso {
 			const {x: dx, y: dy} = normalizeVector(
 				mouseX - this.currentX,
 				mouseY - this.currentY,
-				Lasso.MOUSE_SPEED
+				Lasso.MOVE_SPEED
 			)
 	
 			// Move point towards the mouse
@@ -52,7 +53,38 @@ export class Lasso {
 	}
 
 	back() {
+		if (this.points.length === 0)
+			return; // lasso is already empty
 
+		let {x: prevX, y: prevY} = this.points[this.points.length-1];
+		let retract = Lasso.RETRACT_SPEED;
+		while (retract > 0) {
+			const {x: dx, y: dy, length} = normalizeVector(
+				this.currentX - prevX,
+				this.currentY - prevY,
+				retract
+			);
+
+			retract -= length;
+			this.currentX -= dx;
+			this.currentY -= dy;
+
+			console.log(dx, dy, this.currentX - prevX, this.currentY - prevY);
+			
+			// Check if target is on the point
+			if (Math.abs(this.currentX - prevX) + Math.abs(this.currentY - prevY) <= 0.01) {
+				this.points.pop(); // remove last point
+
+				if (this.points.length === 0)
+					return; // lasso is empty
+
+				// Update point
+				const u = this.points[this.points.length-1];
+				prevX = u.x;
+				prevY = u.y;
+			}
+		}
+		
 	}
 
 	draw(ctx: CanvasRenderingContext2D) {

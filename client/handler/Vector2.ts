@@ -3,13 +3,24 @@ export interface Vector2 {
 	y: number;
 }
 
-export function normalizeVector(dx: number, dy: number, norm = 1): Vector2 {
+export function normalizeVector(dx: number, dy: number, norm = 1) {
 	const dist = Math.sqrt(dx * dx + dy * dy);
-	const ratio = dist <= norm ? 1 : norm/dist;
+	let length;
+	let ratio;
+	
+	if (dist <= norm) {
+		length = dist;
+		ratio = 1;
+	} else {
+		length = norm;
+		ratio = norm/dist;
+	}
+
 	return {
 		x: dx * ratio,
 		y: dy * ratio,
-	}
+		length
+	};
 }
 
 export function evalDist2(dx: number, dy: number) {

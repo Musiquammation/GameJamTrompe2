@@ -42,7 +42,7 @@ export class Player extends Entity {
 			const {x: mouseX, y: mouseY} = game.getMouse();
 			this.lasso.frame(this.x, this.y, mouseX, mouseY);
 		} else {
-			this.lasso.back
+			this.lasso.back();
 		}
 	}
 
