@@ -86,6 +86,7 @@ export function startGame() {
 	);
 
 
+
 	function runGameLoop() {
 		game.gameLogic();
 		game.gameDraw(
