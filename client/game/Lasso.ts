@@ -93,6 +93,7 @@ export class Lasso {
 
 		ctx.strokeStyle = "#777";
 		for (let i = 0; i < this.points.length - 1; i++) {
+			ctx.lineWidth = Math.max(700 - i, 0)/100 + 1;
 			ctx.beginPath();
 			ctx.moveTo(this.points[i].x, this.points[i].y);
 			ctx.lineTo(this.points[i + 1].x, this.points[i + 1].y);
