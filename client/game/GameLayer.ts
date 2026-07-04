@@ -145,7 +145,7 @@ export abstract class GameLayer extends GameState {
 		scoreDiv.innerText = this.score.toString().padStart(5, "0");
 	}
 
-	protected getMouse() {
+	getMouse() {
 		return {x: this.lastMouseX, y: this.lastMouseY};
 	}
 

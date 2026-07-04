@@ -67,19 +67,11 @@ export abstract class Entity {
 
 	protected abstract getDrawData(): DrawData;
 
-	draw(ctx: CanvasRenderingContext2D, iloader: ImageLoader) {
-		const { bars, texture } = this.getDrawData();
-		const { width, height } = this.getSize();
-
-		const img = iloader.get(texture);
-		ctx.drawImage(
-			img,
-			this.x - width/2,
-			this.y - height/2,
-			width,
-			height
-		);
-
+	protected drawBars(
+		ctx: CanvasRenderingContext2D,
+		bars: DrawBar[],
+		height: number
+	) {
 		let y = this.y - (height/2 + Math.min(10, height*.3));
 
 		for (const bar of bars) {
@@ -102,6 +94,22 @@ export abstract class Entity {
 
 			y -= h + 2;
 		}
+	}
+
+	draw(ctx: CanvasRenderingContext2D, iloader: ImageLoader) {
+		const { bars, texture } = this.getDrawData();
+		const { width, height } = this.getSize();
+
+		const img = iloader.get(texture);
+		ctx.drawImage(
+			img,
+			this.x - width/2,
+			this.y - height/2,
+			width,
+			height
+		);
+
+		this.drawBars(ctx, bars, height);
 	}
 
 	isTouching(other: Entity): boolean {

@@ -1,11 +1,16 @@
 import { GameHandler } from "../handler/GameHandler";
+import { ImageLoader } from "../handler/ImageLoader";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
+import { Lasso } from "./Lasso";
 
 export class Player extends Entity {
 	private static readonly HP = 1000;
 	private static readonly SIZE = 24;
 	private static readonly SPEED = 3;
+
+
+	private readonly lasso = new Lasso();
 
 	override frame(game: Game, handler: GameHandler) {
 		// Collect inputs
@@ -31,6 +36,10 @@ export class Player extends Entity {
 		} else {
 			this.vy = -Player.SPEED; // set velocity to the up
 		}
+
+		// Call lasso
+		const {x: mouseX, y: mouseY} = game.getMouse();
+		this.lasso.frame(this.x, this.y, mouseX, mouseY);
 	}
 
 	override update(game: Game) {
@@ -63,6 +72,14 @@ export class Player extends Entity {
 			}],
 			texture: this.getTexture()
 		};
+	}
+
+	override draw(ctx: CanvasRenderingContext2D, iloader: ImageLoader) {
+		// Draw lasso
+		this.lasso.draw(ctx);
+
+		// Draw player
+		super.draw(ctx, iloader);
 	}
 }
 

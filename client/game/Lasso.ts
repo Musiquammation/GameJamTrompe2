@@ -24,6 +24,8 @@ export class Lasso {
 			y: mouseY - this.currentY,
 		})
 
+		console.log(dx, dy, mouseX - this.currentX, mouseY - this.currentY);
+
 		// Move point towards the mouse
 		this.currentX += dx * Lasso.MOUSE_SPEED;
 		this.currentY += dy * Lasso.MOUSE_SPEED;
@@ -32,5 +34,25 @@ export class Lasso {
 	}
 
 
-	
+	draw(ctx: CanvasRenderingContext2D) {
+		if (this.points.length === 0)
+			return; // nothing to draw
+
+		ctx.save();
+
+		ctx.strokeStyle = "#777";
+		for (let i = 0; i < this.points.length - 1; i++) {
+			ctx.beginPath();
+			ctx.moveTo(this.points[i].x, this.points[i].y);
+			ctx.lineTo(this.points[i + 1].x, this.points[i + 1].y);
+			ctx.stroke();
+		}
+
+		ctx.beginPath();
+		ctx.moveTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
+		ctx.lineTo(this.currentX, this.currentY);
+		ctx.stroke();
+
+		ctx.restore();
+	}
 }
