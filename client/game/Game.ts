@@ -19,7 +19,7 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		this.mouses.push(new Mouse(20, 0));
+		this.mouses.push(new Mouse(-200, 0));
 		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
@@ -60,7 +60,7 @@ export class Game extends GameLayer {
 
 		// Update
 		for (const entity of this.getEntities()) {
-			entity.update(this, handler);
+			entity.update(this);
 		}
 
 

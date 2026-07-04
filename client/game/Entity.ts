@@ -54,7 +54,7 @@ export abstract class Entity {
 	}
 
 	abstract frame(game: Game, handler: GameHandler): void;
-	abstract update(game: Game, handler: GameHandler): void;
+	abstract update(game: Game): void;
 
 	move() {
 		this.x += this.vx;

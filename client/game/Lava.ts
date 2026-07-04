@@ -1,5 +1,4 @@
 import { GameHandler } from "../handler/GameHandler";
-import { normalizeVector, Vector2 } from "../handler/Vector2";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 
@@ -20,7 +19,7 @@ export class Lava extends Entity {
     override frame(game: Game, handler: GameHandler) {
     }
 
-    override update(game: Game, handler: GameHandler) {
+    override update(game: Game) {
         // Damage entities passing over lava
         for (const e of game.getEntities()) {
             if (e instanceof Lava)
@@ -33,8 +32,6 @@ export class Lava extends Entity {
 
         // Loose 1hp for cooldown
         this.hit(1);
-
-
     }
 
     override getMaxHp() {

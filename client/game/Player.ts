@@ -3,7 +3,7 @@ import { Entity } from "./Entity";
 import { Game } from "./Game";
 
 export class Player extends Entity {
-	private static readonly HP = 100;
+	private static readonly HP = 1000;
 	private static readonly SIZE = 24;
 	private static readonly SPEED = 3;
 
@@ -33,12 +33,12 @@ export class Player extends Entity {
 		}
 	}
 
-	override update(game: Game, handler: GameHandler) {
+	override update(game: Game) {
 		
 	}
 
 	override getMaxHp() {
-		return 100;
+		return Player.HP;
 	}
 
 	private getTexture() {
