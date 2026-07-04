@@ -140,11 +140,11 @@ export class InputHandler {
 	private static mouseButtonToControl(e: MouseEvent): Control | null {
 		switch (e.button) {
 			case 0:
-				return "mouse-left";
+				return 'mouse-left';
 			case 1:
-				return "mouse-middle";
+				return 'mouse-middle';
 			case 2:
-				return "mouse-right";
+				return 'mouse-right';
 			default:
 				return null;
 		}
