@@ -12,6 +12,9 @@ export class Game extends GameLayer {
 	mouses = new Array<Mouse>();
 	lavas = new Array<Lava>();
 
+	static readonly WIDTH = 800;
+	static readonly HEIGHT = 450;
+
 	// tests
 	constructor() {
 		super();
@@ -19,7 +22,9 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		this.mouses.push(new Mouse(-200, 0));
+		for (let i = 0; i < 50; i++)
+			this.mouses.push(new Mouse(-200, 0));
+
 		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
@@ -48,15 +53,41 @@ export class Game extends GameLayer {
 		// Run frames
 		for (const entity of this.getEntities()) {
 			entity.frame(this, handler);
-		}
-
-		/// TODO: collisions
-		
+		}		
 		
 		// Move
 		for (const entity of this.getEntities()) {
 			entity.move();
 		}
+
+		// Collisions
+		const entities = Array.from(this.getEntities());
+		for (let i = 0; i < entities.length; i++) {
+			const self = entities[i];
+			for (let j = i + 1; j < entities.length; j++) {
+				const m = entities[j];
+				const {
+					list,
+					defaultCollide
+				} = self.getCollidingClasses();
+
+				let notFound = true;
+				for (const k of list) {
+					if (m instanceof k) {
+						if (!defaultCollide) {
+							self.applyCollision(m);
+						}
+						notFound = false;
+						break;
+					}
+				}
+
+				if (notFound && defaultCollide) {
+					self.applyCollision(m);
+				}
+			}
+		}
+
 
 		// Update
 		for (const entity of this.getEntities()) {

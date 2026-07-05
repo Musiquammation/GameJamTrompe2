@@ -2,6 +2,7 @@ import { GameHandler } from "../handler/GameHandler";
 import { normalizeVector, Vector2 } from "../handler/Vector2";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
+import { Lava } from "./Lava";
 
 export class Mouse extends Entity {
 	private static readonly HP = 100;
@@ -58,6 +59,13 @@ export class Mouse extends Entity {
 			}],
 			texture: this.getTexture(),
 		};
+	}
+
+	override getCollidingClasses() {
+		return {
+			list: [Lava],
+			defaultCollide: true
+		}
 	}
 }
 

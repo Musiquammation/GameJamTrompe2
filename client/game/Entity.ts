@@ -67,6 +67,11 @@ export abstract class Entity {
 
 	protected abstract getDrawData(): DrawData;
 
+	abstract getCollidingClasses(): {
+		list: (new (...args: any[]) => Entity)[],
+		defaultCollide: boolean
+	};
+
 	protected drawBars(
 		ctx: CanvasRenderingContext2D,
 		bars: DrawBar[],
@@ -132,6 +137,63 @@ export abstract class Entity {
 			ay1 < by2 &&
 			ay2 > by1
 		);
+	}
+
+
+
+	applyCollision(m: Entity) {
+		const thisSize = this.getSize();
+		const mSize = m.getSize();
+
+		// Compute equivalent radii (as in your Python version)
+		const rthis = (thisSize.width + thisSize.height) / 4;
+		const rM = (mSize.width + mSize.height) / 4;
+		const minDist = rthis + rM;
+
+		let dx = this.x - m.x;
+		let dy = this.y - m.y;
+		let dist = Math.sqrt(dx * dx + dy * dy);
+
+		if (dist === 0) {
+			dx = 1.0;
+			dy = 0.0;
+			dist = 1.0;
+		}
+
+		if (dist < minDist) {
+			// Normalize collision vector
+			const nx = dx / dist;
+			const ny = dy / dist;
+
+			// Separate both entities
+			const overlap = minDist - dist;
+			this.x += (nx * overlap) / 2;
+			this.y += (ny * overlap) / 2;
+			m.x -= (nx * overlap) / 2;
+			m.y -= (ny * overlap) / 2;
+
+			// Reflect velocities along collision axis
+			const dvx = this.vx - m.vx;
+			const dvy = this.vy - m.vy;
+			const dot = dvx * nx + dvy * ny;
+
+			if (dot < 0) { // Only if they are moving toward each other
+				this.vx -= dot * nx;
+				this.vy -= dot * ny;
+				m.vx += dot * nx;
+				m.vy += dot * ny;
+			}
+
+			const rthisW = thisSize.width / 2;
+			const rthisH = thisSize.height / 2;
+			const rMW = mSize.width / 2;
+			const rMH = mSize.height / 2;
+
+			this.x = Math.max(-Game.WIDTH + rthisW, Math.min(this.x, Game.WIDTH - rthisW));
+			this.y = Math.max(-Game.HEIGHT + rthisH, Math.min(this.y, Game.HEIGHT - rthisH));
+			m.x = Math.max(-Game.WIDTH + rMW, Math.min(m.x, Game.WIDTH - rMW));
+			m.y = Math.max(-Game.HEIGHT + rMH, Math.min(m.y, Game.HEIGHT - rMH));
+		}
 	}
 }
 

@@ -3,6 +3,8 @@ import { ImageLoader } from "../handler/ImageLoader";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 import { Lasso } from "./Lasso";
+import { Lava } from "./Lava";
+import { Mouse } from "./Mouse";
 
 export class Player extends Entity {
 	private static readonly HP = 1000;
@@ -84,6 +86,14 @@ export class Player extends Entity {
 
 		// Draw player
 		super.draw(ctx, iloader);
+	}
+
+
+	override getCollidingClasses() {
+		return {
+			list: [Mouse, Lava],
+			defaultCollide: true
+		}
 	}
 }
 
