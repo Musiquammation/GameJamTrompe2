@@ -2,32 +2,25 @@ import { GameHandler } from "../handler/GameHandler";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 
-export class Lava extends Entity {
-	private static readonly DAMAGES = 4;
+export class Cheese extends Entity {
+	private static readonly HP = 2000;
+	private static readonly SIZE = 16;
 
-	private width: number;
-	private height: number;
-	private duration: number;
+	private burning = false;
 
-	constructor(x: number, y: number, width: number, height: number, duration: number) {
-		super(x, y, duration);
-		this.width = width;
-		this.height = height;
-		this.duration = duration;
+	constructor(x: number, y: number) {
+		super(x, y, Cheese.HP);
 	}
 
 	override frame(game: Game, handler: GameHandler) {
+		this.burning = false; // reset
 	}
 
 	override update(game: Game) {
 		// Damage entities passing over lava
 		for (const e of game.getEntities()) {
-			if (e instanceof Lava)
-				continue;
-
-			if (this.isTouching(e)) {
-				e.onBurning();
-				e.hit(Lava.DAMAGES);
+			if (e instanceof Cheese) {
+				
 			}
 		}
 
@@ -36,17 +29,21 @@ export class Lava extends Entity {
 	}
 
 	override getMaxHp() {
-		return this.duration;
+		return Cheese.HP;
 	}
 
 	private getTexture() {
-		return "lava";
+		if (this.burning) {
+			return "cheeseHot";
+		}
+
+		return "cheese";
 	}
 
 	override getSize() {
 		return {
-			width: this.width,
-			height: this.height
+			width: Cheese.SIZE,
+			height: Cheese.SIZE
 		};
 	}
 	
@@ -54,10 +51,10 @@ export class Lava extends Entity {
 		return {
 			bars: [{
 				value: this.getHp(),
-				total: this.duration,
+				total: Cheese.HP,
 				color: Entity.HP_COLOR,
 				background: Entity.HP_BACKGROUND,
-				size: this.width * 1.2
+				size: Cheese.SIZE * 1.2
 			}],
 			texture: this.getTexture()
 		};
@@ -68,6 +65,10 @@ export class Lava extends Entity {
 			list: [],
 			defaultCollide: false
 		}
+	}
+
+	override onBurning() {
+		this.burning = true;
 	}
 }
 

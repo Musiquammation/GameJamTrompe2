@@ -118,6 +118,9 @@ export abstract class Entity {
 		}
 	}
 
+
+	onBurning() {}
+
 	draw(ctx: CanvasRenderingContext2D, iloader: ImageLoader) {
 		const { bars, texture } = this.getDrawData();
 		const { width, height } = this.getSize();

@@ -5,7 +5,7 @@ import { Game } from "./Game";
 import { Lava } from "./Lava";
 
 export class Mouse extends Entity {
-	private static readonly HP = 100;
+	private static readonly HP = 400;
 	private static readonly SIZE = 16;
 	private static readonly SPEED = 2;
 	private static readonly DAMAGES = 30;

@@ -1,6 +1,7 @@
 import { GameHandler } from "../handler/GameHandler";
 import { ImageLoader } from "../handler/ImageLoader";
 import { GameState } from "../handler/states";
+import { Cheese } from "./Cheese";
 import { Entity } from "./Entity";
 import { GameLayer } from "./GameLayer";
 import { Lava } from "./Lava";
@@ -11,6 +12,7 @@ export class Game extends GameLayer {
 	player = new Player(0, 0);
 	mouses = new Array<Mouse>();
 	lavas = new Array<Lava>();
+	cheeses = new Array<Cheese>();
 
 	static readonly WIDTH = 220;
 	static readonly HEIGHT = 123;
@@ -22,9 +24,10 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		for (let i = 0; i < 50; i++)
+		for (let i = 0; i < 0; i++)
 			this.mouses.push(new Mouse(-200, 0));
 
+		this.cheeses.push(new Cheese(60, 0));
 		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
@@ -46,6 +49,7 @@ export class Game extends GameLayer {
 	*getEntities(): Generator<Entity> {
 		yield *this.lavas;
 		yield *this.mouses;
+		yield *this.cheeses;
 		yield this.player;
 	}
 	
@@ -98,6 +102,7 @@ export class Game extends GameLayer {
 		// Remove entities
 		Game.removeDeadInPlace(this.mouses);
 		Game.removeDeadInPlace(this.lavas);
+		Game.removeDeadInPlace(this.cheeses);
 
 
 		return null;
