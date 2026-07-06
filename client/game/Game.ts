@@ -12,8 +12,8 @@ export class Game extends GameLayer {
 	mouses = new Array<Mouse>();
 	lavas = new Array<Lava>();
 
-	static readonly WIDTH = 800;
-	static readonly HEIGHT = 450;
+	static readonly WIDTH = 220;
+	static readonly HEIGHT = 123;
 
 	// tests
 	constructor() {

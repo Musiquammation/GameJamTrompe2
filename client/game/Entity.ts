@@ -59,6 +59,23 @@ export abstract class Entity {
 	move() {
 		this.x += this.vx;
 		this.y += this.vy;
+
+		// Check bounds
+		if (this.x < -Game.WIDTH) {
+			this.x = -Game.WIDTH;
+			this.vx = 0;
+		} else if (this.x > Game.WIDTH) {
+			this.x = Game.WIDTH;
+			this.vx = 0;
+		}
+
+		if (this.y < -Game.HEIGHT) {
+			this.y = -Game.HEIGHT;
+			this.vy = 0;
+		} else if (this.y > Game.HEIGHT) {
+			this.y = Game.HEIGHT;
+			this.vy = 0;
+		}
 	}
 
 	abstract getMaxHp(): number;
