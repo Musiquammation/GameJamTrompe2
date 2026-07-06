@@ -1,5 +1,6 @@
 import { GameHandler } from "../handler/GameHandler";
-import { normalizeVector, Vector2 } from "../handler/Vector2";
+import { normalizeVector } from "../handler/Vector2";
+import { Cheese } from "./Cheese";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 import { Lava } from "./Lava";
@@ -9,18 +10,49 @@ export class Mouse extends Entity {
 	private static readonly SIZE = 16;
 	private static readonly SPEED = 2;
 	private static readonly DAMAGES = 30;
+	private static readonly CHEESE_RANGE = 100;
+	private static readonly CHEESE_MAX_DAMAGES = 10;
+
+	private searchCheese(cheeses: Cheese[]) {
+		let best = null;
+		let bestDist2 = Mouse.CHEESE_RANGE*Mouse.CHEESE_RANGE;
+		for (const cheese of cheeses) {
+			const dx = cheese.x - this.x
+			const dy = cheese.y - this.y;
+			const dist2 = dx*dx + dy*dy;
+
+			// Nearest than previous best cheese
+			if (dist2 < bestDist2) {
+				best = cheese;
+				bestDist2 = dist2;
+			}
+		}
+
+		return {cheese: best, dist: Math.sqrt(bestDist2)};
+	}
 
 	override frame(game: Game, handler: GameHandler) {
-		const player = game.player;
+		const {cheese, dist} = this.searchCheese(game.cheeses);
+		if (cheese) {
+			// Eat cheese
+			const dmg = (Mouse.CHEESE_RANGE - dist) * 
+				(Mouse.CHEESE_MAX_DAMAGES / Mouse.CHEESE_RANGE);
+			cheese.hit(dmg);
+		}
 
-		// Get direction to player
+
+
+		// Search nearest cheese around, else take player
+		const target = cheese ?? game.player;
+
+		// Get direction to target
 		const {x: dx, y: dy} = normalizeVector(
-			player.x - this.x,
-			player.y - this.y,
+			target.x - this.x,
+			target.y - this.y,
 			Mouse.SPEED
 		);
 
-		// Follow player
+		// Follow target
 		this.vx = dx;
 		this.vy = dy;
 	}
@@ -63,7 +95,7 @@ export class Mouse extends Entity {
 
 	override getCollidingClasses() {
 		return {
-			list: [Lava],
+			list: [Lava, Cheese],
 			defaultCollide: true
 		}
 	}

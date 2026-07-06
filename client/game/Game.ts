@@ -24,11 +24,12 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		for (let i = 0; i < 0; i++)
+		for (let i = 0; i < 50; i++)
 			this.mouses.push(new Mouse(-200, 0));
 
-		this.cheeses.push(new Cheese(60, 0));
-		this.lavas.push(new Lava(100, 0, 100, 100, 1000))
+		for (let i = 0; i < 50; i++)
+			this.cheeses.push(new Cheese(60+i/10, 0));
+		// this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
 	private static removeDeadInPlace<T extends Entity>(arr: T[]): void {
