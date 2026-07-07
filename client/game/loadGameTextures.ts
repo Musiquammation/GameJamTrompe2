@@ -4,6 +4,7 @@ export function loadGameTextures(iloader: ImageLoader) {
 	iloader.load({
 		"playerIdle": "assets/elephant.png",
 		"mouseIdle": "assets/mouse.png",
+		"mouseFly": "assets/flying-mouse.png",
 		"lava": "assets/lava.png",
 		"cheese": "assets/cheese.png",
 		"cheeseHot": "assets/cheese-hot.png",

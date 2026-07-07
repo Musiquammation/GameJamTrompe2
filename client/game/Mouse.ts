@@ -8,10 +8,13 @@ import { Lava } from "./Lava";
 export class Mouse extends Entity {
 	private static readonly HP = 400;
 	private static readonly SIZE = 16;
-	private static readonly SPEED = 2;
+	private static readonly WALK_SPEED = 1;
 	private static readonly DAMAGES = 30;
 	private static readonly CHEESE_RANGE = 100;
 	private static readonly CHEESE_MAX_DAMAGES = 10;
+	private static readonly FOLLOW_ACC = .016;
+
+	private followingSpeed = -1; // negative if we follow a cheese
 
 	private searchCheese(cheeses: Cheese[]) {
 		let best = null;
@@ -38,6 +41,14 @@ export class Mouse extends Entity {
 			const dmg = (Mouse.CHEESE_RANGE - dist) * 
 				(Mouse.CHEESE_MAX_DAMAGES / Mouse.CHEESE_RANGE);
 			cheese.hit(dmg);
+
+			this.followingSpeed = -1; // we follow a cheese
+		} else if (this.followingSpeed < 0) {
+			// Start unfollow
+			this.followingSpeed = Mouse.WALK_SPEED;
+		} else {
+			// Continue unfollow (accelerate)
+			this.followingSpeed += Mouse.FOLLOW_ACC;
 		}
 
 
@@ -45,11 +56,14 @@ export class Mouse extends Entity {
 		// Search nearest cheese around, else take player
 		const target = cheese ?? game.player;
 
+		const speed = this.followingSpeed < 0 ?
+			Mouse.WALK_SPEED : this.followingSpeed;
+
 		// Get direction to target
 		const {x: dx, y: dy} = normalizeVector(
 			target.x - this.x,
 			target.y - this.y,
-			Mouse.SPEED
+			speed
 		);
 
 		// Follow target
@@ -70,7 +84,8 @@ export class Mouse extends Entity {
 	}
 
 	private getTexture() {
-		return "mouseIdle";
+		return this.followingSpeed < 0 ?
+			"mouseIdle" : "mouseFly";
 	}
 
 	override getSize() {

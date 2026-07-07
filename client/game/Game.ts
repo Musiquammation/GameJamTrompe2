@@ -24,7 +24,7 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		for (let i = 0; i < 0; i++)
+		for (let i = 0; i < 1; i++)
 			this.mouses.push(new Mouse(-200, 0));
 
 		for (let i = 0; i < 1; i++)
