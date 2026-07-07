@@ -9,6 +9,10 @@ export class Lasso {
 
 	private points = new Array<Vector2>();
 
+	getTarget() {
+		return {x: this.currentX, y: this.currentY};
+	}
+
 	frame(srcX: number, srcY: number, mouseX: number, mouseY: number) {
 		// Lasso is empty?
 		if (this.points.length === 0) {

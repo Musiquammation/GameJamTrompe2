@@ -1,5 +1,7 @@
 import { GameHandler } from "../handler/GameHandler";
 import { ImageLoader } from "../handler/ImageLoader";
+import { evalDist2, normalizeVector } from "../handler/Vector2";
+import { Cheese } from "./Cheese";
 import { Entity } from "./Entity";
 import { Game } from "./Game";
 import { Lasso } from "./Lasso";
@@ -10,9 +12,68 @@ export class Player extends Entity {
 	private static readonly HP = 1000;
 	private static readonly SIZE = 24;
 	private static readonly SPEED = 3;
+	private static readonly ASPIRATION_SPEED = 4;
+	private static readonly CHEESE_RANGE = 5;
 
 
 	private readonly lasso = new Lasso();
+	private cheese: Cheese | null = null;
+
+	private attractMouse(game: Game) {
+		const {x, y} = game.getMouse();
+		const {x: lassoX, y: lassoY} = this.lasso.getTarget();
+
+		let takenCheese = null;
+		for (const cheese of game.cheeses) {
+			// Attract cheeses
+			const targetDist2 = evalDist2(lassoX - cheese.x, lassoY - cheese.y);
+
+			if (targetDist2 <= Player.CHEESE_RANGE*Player.CHEESE_RANGE) {
+				takenCheese = cheese;
+				cheese.vx = 0;
+				cheese.vy = 0;
+				cheese.x = lassoX;
+				cheese.y = lassoY;
+				continue;
+			}
+
+			const dx = x - cheese.x;
+			const dy = y - cheese.y;
+			const dist2 = dx*dx + dy*dy;
+			if (dist2 <= Player.CHEESE_RANGE*Player.CHEESE_RANGE) {
+				cheese.vx = 0;
+				cheese.vy = 0;
+				cheese.x = x;
+				cheese.y = y;
+
+			} else {
+				const n = normalizeVector(dx, dy, Player.ASPIRATION_SPEED / Math.sqrt(dist2));
+				cheese.vx += n.x;
+				cheese.vy += n.y;
+			}
+		}
+
+		if (takenCheese === null)
+			return;
+
+		if (takenCheese) {
+			this.cheese = takenCheese;
+			this.cheese.taken = true;
+			console.log("taken");
+		}
+	}
+
+	private releaseMouse(game: Game) {
+		if (this.cheese) {
+			game.cheeses.push(this.cheese);
+			this.cheese.taken = false;
+			this.cheese = null;
+		}
+	}
+
+	getCheese() {
+		return this.cheese;
+	}
 
 	override frame(game: Game, handler: GameHandler) {
 		// Collect inputs
@@ -45,6 +106,19 @@ export class Player extends Entity {
 			this.lasso.frame(this.x, this.y, mouseX, mouseY);
 		} else {
 			this.lasso.back();
+		}
+
+		// Handle mouse
+		if (handler.inputHandler.press('mouse-left')) {
+			if (this.cheese) {
+				const {x, y} = this.lasso.getTarget();
+				this.cheese.x = x;
+				this.cheese.y = y;
+			} else {
+				this.attractMouse(game);
+			}
+		} else {
+			this.releaseMouse(game);
 		}
 	}
 

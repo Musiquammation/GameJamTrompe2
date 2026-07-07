@@ -24,11 +24,11 @@ export class Game extends GameLayer {
 	}
 
 	private test() {
-		for (let i = 0; i < 50; i++)
+		for (let i = 0; i < 0; i++)
 			this.mouses.push(new Mouse(-200, 0));
 
-		for (let i = 0; i < 50; i++)
-			this.cheeses.push(new Cheese(60+i/10, 0));
+		for (let i = 0; i < 1; i++)
+			this.cheeses.push(new Cheese(60+i/10, i/10));
 		// this.lavas.push(new Lava(100, 0, 100, 100, 1000))
 	}
 
@@ -38,7 +38,7 @@ export class Game extends GameLayer {
 		for (let read = 0; read < arr.length; read++) {
 			const e = arr[read];
 
-			if (e.getHp() > 0) {
+			if (e.isInGame()) {
 				arr[write] = e;
 				write++;
 			}
@@ -47,11 +47,18 @@ export class Game extends GameLayer {
 		arr.length = write;
 	}
 
-	*getEntities(): Generator<Entity> {
+	*getEntities(takePlayerCheese = true): Generator<Entity> {
 		yield *this.lavas;
 		yield *this.mouses;
 		yield *this.cheeses;
 		yield this.player;
+
+		if (takePlayerCheese) {
+			const playerCheese = this.player.getCheese();
+			if (playerCheese) {
+				yield playerCheese;
+			}
+		}
 	}
 	
 	frame(handler: GameHandler): GameState | null {
@@ -66,7 +73,7 @@ export class Game extends GameLayer {
 		}
 
 		// Collisions
-		const entities = Array.from(this.getEntities());
+		const entities = Array.from(this.getEntities(false));
 		for (let i = 0; i < entities.length; i++) {
 			const self = entities[i];
 			for (let j = i + 1; j < entities.length; j++) {

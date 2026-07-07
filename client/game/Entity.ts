@@ -53,6 +53,10 @@ export abstract class Entity {
 		this.hp = -Infinity;
 	}
 
+	isInGame() {
+		return this.hp > 0;
+	}
+
 	abstract frame(game: Game, handler: GameHandler): void;
 	abstract update(game: Game): void;
 

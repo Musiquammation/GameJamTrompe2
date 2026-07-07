@@ -5,8 +5,10 @@ import { Game } from "./Game";
 export class Cheese extends Entity {
 	private static readonly HP = 2000;
 	private static readonly SIZE = 16;
+	private static readonly DECELERATION = .9;
 
 	private burning = false;
+	taken = false;
 
 	constructor(x: number, y: number) {
 		super(x, y, Cheese.HP);
@@ -17,15 +19,11 @@ export class Cheese extends Entity {
 	}
 
 	override update(game: Game) {
-		// Damage entities passing over lava
-		for (const e of game.getEntities()) {
-			if (e instanceof Cheese) {
-				
-			}
-		}
-
 		// Loose 1hp for cooldown
 		this.hit(1);
+
+		this.vx *= Cheese.DECELERATION;
+		this.vy *= Cheese.DECELERATION;
 	}
 
 	override getMaxHp() {
@@ -33,6 +31,15 @@ export class Cheese extends Entity {
 	}
 
 	private getTexture() {
+		if (this.taken) {
+			if (this.burning) {
+				return "cheeseHotTransparent";
+			}
+
+			return "cheeseTransparent";
+			
+		}
+
 		if (this.burning) {
 			return "cheeseHot";
 		}
@@ -62,13 +69,17 @@ export class Cheese extends Entity {
 
 	override getCollidingClasses() {
 		return {
-			list: [],
+			list: [Cheese],
 			defaultCollide: false
 		}
 	}
 
 	override onBurning() {
 		this.burning = true;
+	}
+
+	override isInGame() {
+		return super.isInGame() && !this.taken;
 	}
 }
 
